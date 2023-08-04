@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "576815317",
+    "firebase_url": "https://homeautomationpriject18-default-rtdb.firebaseio.com",
+    "project_id": "homeautomationpriject18",
+    "storage_bucket": "homeautomationpriject18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576815317:android:0f27e9a0b1602d2782e25c",
+        "android_client_info": {
+          "package_name": "com.coda.home_automation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576815317-6575kdi19u48sfh0e36v9m2qhd3ldvnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDanucmTxK5YD3sq2Zn7CwsCk632wFWYP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576815317-6575kdi19u48sfh0e36v9m2qhd3ldvnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
