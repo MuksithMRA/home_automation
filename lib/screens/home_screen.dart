@@ -1,11 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:home_automation/models/device_model.dart';
-import 'package:home_automation/providers/device_provider.dart';
-import 'package:home_automation/screens/chart_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../models/device_model.dart';
+import '../providers/device_provider.dart';
+import 'chart_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     pDevice = context.read<DeviceProvider>();
+    pDevice.getData();
   }
 
   @override
@@ -85,71 +87,84 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
-                ...List.generate(pDevice.devices.length, (index) {
-                  DeviceModel device = pDevice.devices[index];
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        top: 20, right: index % 2 == 0 ? 10 : 0),
-                    child: Material(
-                      elevation: 3,
-                      borderRadius: BorderRadius.circular(20),
-                      child: SizedBox(
-                        height: screenSize.height * 0.35,
-                        width: screenSize.width * 0.45,
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                                child: Image.asset(device.image)),
-                            Expanded(
-                              child: Row(
+                Consumer<DeviceProvider>(
+                  builder: (context, cDevice, child) {
+                    return Wrap(
+                      children: List.generate(cDevice.devices.length, (index) {
+                        DeviceModel device = cDevice.devices[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              top: 20, right: index % 2 == 0 ? 10 : 0),
+                          child: Material(
+                            elevation: 3,
+                            borderRadius: BorderRadius.circular(20),
+                            child: SizedBox(
+                              height: screenSize.height * 0.35,
+                              width: screenSize.width * 0.45,
+                              child: Column(
                                 children: [
-                                  Flexible(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 10,
+                                  ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
                                       ),
-                                      alignment: Alignment.centerLeft,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            device.deviceName,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const Text(
-                                            "Turned Off",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 13,
+                                      child: Image.asset(device.image)),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15,
+                                              vertical: 10,
                                             ),
-                                          )
-                                        ],
-                                      ),
+                                            alignment: Alignment.centerLeft,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  device.deviceName,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "Turned ${device.isOn == 1 ? 'On' : 'Off'}",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Transform.rotate(
+                                          angle: -90 * pi / 180,
+                                          child: Switch(
+                                              value: device.isOn == 1,
+                                              onChanged: (isOn) async {
+                                                await cDevice.turnOnOrOffDevice(
+                                                  device.relayNo,
+                                                  isOn ? 1 : 0,
+                                                );
+                                              }),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Transform.rotate(
-                                    angle: 90 * pi / 180,
-                                    child: Switch(
-                                        value: false, onChanged: (value) {}),
-                                  )
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                })
+                          ),
+                        );
+                      }),
+                    );
+                  },
+                )
               ],
             ),
           ],
