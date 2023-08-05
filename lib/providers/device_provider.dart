@@ -26,6 +26,10 @@ class DeviceProvider extends ChangeNotifier {
     ),
   ];
 
+  int totalUnits = 0;
+  double totalAmount = 0;
+  double baseAmountPerUnit = 100;
+
   getData() {
     List<DeviceModel> tempDevices = devices;
     DatabaseReference ref = FirebaseDatabase.instance.ref('relay');

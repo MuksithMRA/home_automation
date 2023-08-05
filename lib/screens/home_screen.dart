@@ -66,11 +66,115 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         Expanded(
-                            child:
-                                PowerConsumptionChart.withDeviceData(context)),
+                          child: PowerConsumptionChart.withDeviceData(context),
+                        ),
                         const SizedBox(height: 15),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showModalBottomSheet(
+                                backgroundColor: Colors.white,
+                                context: context,
+                                builder: (_) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(25),
+                                      height: screenSize.height * 0.35,
+                                      width: screenSize.width,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    "Your Complete Electricity Bill for ${DateFormat.MMMM().format(DateTime.now())}",
+                                                    style: const TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 5),
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child:
+                                                        const Icon(Icons.close))
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 20),
+                                            padding: const EdgeInsets.all(20),
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.23,
+                                            alignment: Alignment.centerLeft,
+                                            width: screenSize.width,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              border: Border.all(
+                                                color: Colors.black45,
+                                              ),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  "Total Bill Amount",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  "LKR ${pDevice.totalUnits * pDevice.baseAmountPerUnit}",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w200,
+                                                    fontSize: 30,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 15),
+                                                const Text(
+                                                  "Total Units Consumed",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  "${pDevice.totalUnits} Units",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w200,
+                                                    fontSize: 30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
                           child: const Text(
                             "View Monthly Bill",
                           ),

@@ -31,14 +31,15 @@ class PowerConsumptionChart extends StatelessWidget {
       BuildContext context) {
     DeviceProvider pDevice =
         Provider.of<DeviceProvider>(context, listen: false);
-    final data = List.generate(
-      pDevice.devices.length,
-      (index) => DevicePower(
+    pDevice.totalUnits = 0;
+    final data = List.generate(pDevice.devices.length, (index) {
+      int unit = Random().nextInt(100);
+      pDevice.totalUnits += unit;
+      return DevicePower(
         pDevice.devices[index].deviceName,
-        Random().nextInt(1000),
-      ),
-    );
-
+        unit,
+      );
+    });
     return [
       charts.Series<DevicePower, String>(
         id: 'Power',

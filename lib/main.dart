@@ -1,5 +1,7 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:home_automation/providers/providers.dart';
 import 'package:home_automation/screens/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +20,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Home Automation',
       theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme(),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: AnimatedSplashScreen(
+        splash: 'assets/logo.png',
+        splashIconSize: 100,
+        nextScreen: const HomeScreen(),
+      ),
     );
   }
 }
