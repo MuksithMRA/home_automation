@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:charts_flutter_new/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:home_automation/providers/device_provider.dart';
@@ -29,15 +27,11 @@ class PowerConsumptionChart extends StatelessWidget {
 
   static List<charts.Series<DevicePower, String>> _createDeviceData(
       BuildContext context) {
-    DeviceProvider pDevice =
-        Provider.of<DeviceProvider>(context, listen: false);
-    pDevice.totalUnits = 0;
+    DeviceProvider pDevice = Provider.of<DeviceProvider>(context);
     final data = List.generate(pDevice.devices.length, (index) {
-      int unit = Random().nextInt(100);
-      pDevice.totalUnits += unit;
       return DevicePower(
         pDevice.devices[index].deviceName,
-        unit,
+        pDevice.devices[index].currentUsage,
       );
     });
     return [

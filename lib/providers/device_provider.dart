@@ -32,11 +32,21 @@ class DeviceProvider extends ChangeNotifier {
 
   getData() {
     List<DeviceModel> tempDevices = devices;
-    DatabaseReference ref = FirebaseDatabase.instance.ref('relay');
-    ref.onValue.listen((DatabaseEvent event) {
+    DatabaseReference relayRef = FirebaseDatabase.instance.ref('relay');
+    relayRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value as Map;
       for (var element in tempDevices) {
         element.isOn = data['switch${element.relayNo.toString()}'];
+      }
+      devices = tempDevices;
+      notifyListeners();
+    });
+    DatabaseReference kwhRef = FirebaseDatabase.instance.ref('Kwh');
+    kwhRef.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value as Map;
+      totalUnits = data['TotalKWH'];
+      for (var element in tempDevices) {
+        element.currentUsage = data['Wh${element.relayNo.toString()}'];
       }
       devices = tempDevices;
       notifyListeners();
