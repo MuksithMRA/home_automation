@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           label: Text(DateFormat.MMMM().format(DateTime.now())))
                     ],
                   ),
-                  Wrap(
+                  Column(
                     children: [
                       Material(
                         elevation: 3,
@@ -210,92 +210,88 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Wrap(
+                      GridView.count(
+                        padding: const EdgeInsets.only(top: 20),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 3 / 5,
                         children:
                             List.generate(cDevice.devices.length, (index) {
                           DeviceModel device = cDevice.devices[index];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                top: 20, right: index % 2 == 0 ? 10 : 0),
-                            child: Material(
-                              elevation: 3,
-                              borderRadius: BorderRadius.circular(20),
-                              child: SizedBox(
-                                height: screenSize.height * 0.35,
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
-                                        child: Image.asset(device.image)),
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Flexible(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 15,
-                                                vertical: 10,
-                                              ),
-                                              alignment: Alignment.centerLeft,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    device.deviceName,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Text(
-                                                    "Turned ${device.isOn == 1 ? 'On' : 'Off'}",
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "${device.currentUsage} kWh",
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Transform.rotate(
-                                            angle: -90 * pi / 180,
-                                            child: Switch(
-                                                value: device.isOn == 1,
-                                                onChanged: (isOn) async {
-                                                  await cDevice
-                                                      .turnOnOrOffDevice(
-                                                    device.relayNo,
-                                                    isOn ? 1 : 0,
-                                                  );
-                                                }),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                          return Material(
+                            elevation: 3,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                  child: Image.asset(device.image),
                                 ),
-                              ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: screenSize.width * 0.04,
+                                            vertical: screenSize.height * 0.03,
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                device.deviceName,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Turned ${device.isOn == 1 ? 'On' : 'Off'}",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${device.currentUsage} kWh",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Transform.rotate(
+                                        angle: -90 * pi / 180,
+                                        child: Switch(
+                                            value: device.isOn == 1,
+                                            onChanged: (isOn) async {
+                                              await cDevice.turnOnOrOffDevice(
+                                                device.relayNo,
+                                                isOn ? 1 : 0,
+                                              );
+                                            }),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         }),
-                      ),
+                      )
                     ],
                   ),
                 ],
