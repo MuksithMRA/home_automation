@@ -5,13 +5,13 @@ import 'package:home_automation/models/device_model.dart';
 class DeviceProvider extends ChangeNotifier {
   List<DeviceModel> devices = [
     DeviceModel(
-      deviceName: "Light Bulb",
-      image: "assets/light_bulb.jpg",
+      deviceName: "Fan",
+      image: "assets/fan.jpg",
       relayNo: 1,
     ),
     DeviceModel(
-      deviceName: "Fan",
-      image: "assets/fan.jpg",
+      deviceName: "Light Bulb",
+      image: "assets/light_bulb.jpg",
       relayNo: 2,
     ),
     DeviceModel(
@@ -26,9 +26,10 @@ class DeviceProvider extends ChangeNotifier {
     ),
   ];
 
-  int totalUnits = 0;
+  double totalUnits = 0;
   double totalAmount = 0;
-  double baseAmountPerUnit = 100;
+  double baseAmountPerUnit = 25;
+  double unitLimit = 100;
 
   getData() {
     List<DeviceModel> tempDevices = devices;
@@ -44,9 +45,10 @@ class DeviceProvider extends ChangeNotifier {
     DatabaseReference kwhRef = FirebaseDatabase.instance.ref('Kwh');
     kwhRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value as Map;
-      totalUnits = data['TotalKWH'];
+      totalUnits = double.parse(data['TotalKWH'].toString());
       for (var element in tempDevices) {
-        element.currentUsage = data['Wh${element.relayNo.toString()}'];
+        element.currentUsage =
+            double.parse(data['Wh${element.relayNo.toString()}'].toString());
       }
       devices = tempDevices;
       notifyListeners();
@@ -58,5 +60,15 @@ class DeviceProvider extends ChangeNotifier {
     await ref.update({
       "switch${relayNo.toString()}": isOn,
     });
+  }
+
+  double calculateMonthlyBill() {
+    if (totalUnits > unitLimit) {
+      double baseTotal = baseAmountPerUnit * unitLimit;
+      double extraTotal = (totalUnits - unitLimit) * (baseAmountPerUnit * 2);
+      return baseTotal + extraTotal;
+    } else {
+      return baseAmountPerUnit * totalUnits;
+    }
   }
 }

@@ -3,7 +3,7 @@ class DeviceModel {
   int isOn;
   String image;
   int relayNo;
-  int currentUsage;
+  double currentUsage;
 
   DeviceModel({
     this.deviceName = "",

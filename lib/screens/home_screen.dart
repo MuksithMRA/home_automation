@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       const SizedBox(height: 5),
                                                       Text(
-                                                        "LKR ${cDevice.totalUnits * cDevice.baseAmountPerUnit}",
+                                                        "LKR ${cDevice.calculateMonthlyBill()}",
                                                         style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w200,

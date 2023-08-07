@@ -38,8 +38,8 @@ class PowerConsumptionChart extends StatelessWidget {
       charts.Series<DevicePower, String>(
         id: 'Power',
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (DevicePower power, _) => power.year,
-        measureFn: (DevicePower power, _) => power.sales,
+        domainFn: (DevicePower power, _) => power.item,
+        measureFn: (DevicePower power, _) => power.power,
         data: data,
       )
     ];
@@ -47,8 +47,8 @@ class PowerConsumptionChart extends StatelessWidget {
 }
 
 class DevicePower {
-  final String year;
-  final int sales;
+  final String item;
+  final double power;
 
-  DevicePower(this.year, this.sales);
+  DevicePower(this.item, this.power);
 }
