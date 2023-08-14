@@ -8,21 +8,25 @@ class DeviceProvider extends ChangeNotifier {
       deviceName: "Fan",
       image: "assets/fan.jpg",
       relayNo: 1,
+      whNo: 4,
     ),
     DeviceModel(
       deviceName: "Light Bulb",
       image: "assets/light_bulb.jpg",
       relayNo: 2,
+      whNo: 1,
     ),
     DeviceModel(
       deviceName: "Rice Cooker",
       image: "assets/rice_cooker.jpg",
       relayNo: 3,
+      whNo: 2,
     ),
     DeviceModel(
       deviceName: "Television",
       image: "assets/tv.jpg",
       relayNo: 4,
+      whNo: 3,
     ),
   ];
 
@@ -47,8 +51,9 @@ class DeviceProvider extends ChangeNotifier {
       final data = event.snapshot.value as Map;
       totalUnits = double.parse(data['TotalKWH'].toString());
       for (var element in tempDevices) {
-        element.currentUsage =
-            double.parse(data['Wh${element.relayNo.toString()}'].toString());
+        element.currentUsage = double.parse(
+          data['Wh${element.whNo.toString()}'].toString(),
+        );
       }
       devices = tempDevices;
       notifyListeners();
